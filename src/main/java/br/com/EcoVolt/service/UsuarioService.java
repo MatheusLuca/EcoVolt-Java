@@ -1,6 +1,7 @@
 package br.com.EcoVolt.service;
 
 import br.com.EcoVolt.dao.ContaEnergiaDao;
+import br.com.EcoVolt.dao.DicaDao;
 import br.com.EcoVolt.dao.PontuacaoDao;
 import br.com.EcoVolt.dao.UsuarioDao;
 import br.com.EcoVolt.exception.EcoVoltException;
@@ -14,6 +15,7 @@ public class UsuarioService {
     private final UsuarioDao usuarioDao = new UsuarioDao();
     private final PontuacaoDao pontuacaoDao = new PontuacaoDao();
     private final ContaEnergiaDao contaEnergiaDao = new ContaEnergiaDao();
+    private final DicaDao dicaDao = new DicaDao();
 
     public Usuario cadastrar(Usuario usuario) throws EcoVoltException, SQLException {
         validarUsuario(usuario);
@@ -37,6 +39,7 @@ public class UsuarioService {
         // Remove vinculos antes do usuario para nao violar FK do Oracle
         pontuacaoDao.removerPorUsuario(id);
         contaEnergiaDao.removerPorUsuario(id);
+        dicaDao.removerPorAutor(id);
         usuarioDao.remover(id);
     }
 

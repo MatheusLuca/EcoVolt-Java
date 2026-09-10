@@ -89,6 +89,29 @@ public class DicaDao {
         }
     }
 
+    public void removerPorAutor(int idUsuario) throws SQLException {
+        // Remove interacoes das dicas do autor e do proprio usuario, depois as dicas
+        String sqlInteracaoDica = "DELETE FROM T_EV_INTERACAO WHERE ID_DICA IN " +
+                "(SELECT ID_DICA FROM T_EV_DICA WHERE ID_USUARIO_AUTOR = ?)";
+        String sqlInteracaoUsuario = "DELETE FROM T_EV_INTERACAO WHERE ID_USUARIO = ?";
+        String sqlDica = "DELETE FROM T_EV_DICA WHERE ID_USUARIO_AUTOR = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(sqlInteracaoDica)) {
+                stmt.setInt(1, idUsuario);
+                stmt.executeUpdate();
+            }
+            try (PreparedStatement stmt = conn.prepareStatement(sqlInteracaoUsuario)) {
+                stmt.setInt(1, idUsuario);
+                stmt.executeUpdate();
+            }
+            try (PreparedStatement stmt = conn.prepareStatement(sqlDica)) {
+                stmt.setInt(1, idUsuario);
+                stmt.executeUpdate();
+            }
+        }
+    }
+
     private Dica montar(ResultSet rs) throws SQLException {
         Dica dica = new Dica();
         dica.setId(rs.getInt("ID_DICA"));
