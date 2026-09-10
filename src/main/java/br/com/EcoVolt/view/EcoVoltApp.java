@@ -26,7 +26,8 @@ import java.util.Scanner;
 public class EcoVoltApp {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+
         UsuarioService usuarioService = new UsuarioService();
         ContaEnergiaService contaEnergiaService = new ContaEnergiaService();
         MissaoService missaoService = new MissaoService();
@@ -35,6 +36,7 @@ public class EcoVoltApp {
         PontuacaoService pontuacaoService = new PontuacaoService();
         RankingService rankingService = new RankingService();
         NivelService nivelService = new NivelService();
+
         int opcao = -1;
 
         while (opcao != 0) {
@@ -64,30 +66,46 @@ public class EcoVoltApp {
             System.out.print("Escolha uma opcao: ");
 
             try {
-                opcao = Integer.parseInt(scanner.nextLine());
+                opcao = Integer.parseInt(sc.nextLine());
 
                 switch (opcao) {
                     case 1: {
-                        Usuario usuario = new Usuario();
                         System.out.print("Nome: ");
-                        usuario.setNome(scanner.nextLine());
+                        String nome = sc.nextLine();
+
                         System.out.print("E-mail: ");
-                        usuario.setEmail(scanner.nextLine());
+                        String email = sc.nextLine();
+
                         System.out.print("Senha: ");
-                        usuario.setSenha(scanner.nextLine());
+                        String senha = sc.nextLine();
+
                         System.out.print("Data nascimento (AAAA-MM-DD) ou Enter: ");
-                        String nasc = scanner.nextLine();
+                        String nasc = sc.nextLine();
+
+                        System.out.print("Genero: ");
+                        String genero = sc.nextLine();
+
+                        System.out.print("Cidade: ");
+                        String cidade = sc.nextLine();
+
+                        System.out.print("Estado (UF): ");
+                        String estado = sc.nextLine();
+
+                        System.out.print("Pais: ");
+                        String pais = sc.nextLine();
+
+                        Usuario usuario = new Usuario();
+                        usuario.setNome(nome);
+                        usuario.setEmail(email);
+                        usuario.setSenha(senha);
                         if (!nasc.trim().isEmpty()) {
                             usuario.setDataNascimento(LocalDate.parse(nasc));
                         }
-                        System.out.print("Genero: ");
-                        usuario.setGenero(scanner.nextLine());
-                        System.out.print("Cidade: ");
-                        usuario.setCidade(scanner.nextLine());
-                        System.out.print("Estado (UF): ");
-                        usuario.setEstado(scanner.nextLine());
-                        System.out.print("Pais: ");
-                        usuario.setPais(scanner.nextLine());
+                        usuario.setGenero(genero);
+                        usuario.setCidade(cidade);
+                        usuario.setEstado(estado);
+                        usuario.setPais(pais);
+
                         System.out.println(usuarioService.cadastrar(usuario));
                         break;
                     }
@@ -104,48 +122,82 @@ public class EcoVoltApp {
                     }
                     case 3: {
                         System.out.print("ID do usuario: ");
-                        Usuario usuario = usuarioService.buscarPorId(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+                        Usuario usuario = usuarioService.buscarPorId(idUsuario);
+
                         System.out.print("Novo nome: ");
-                        usuario.setNome(scanner.nextLine());
+                        String nome = sc.nextLine();
+
                         System.out.print("Novo e-mail: ");
-                        usuario.setEmail(scanner.nextLine());
+                        String email = sc.nextLine();
+
                         System.out.print("Nova senha: ");
-                        usuario.setSenha(scanner.nextLine());
+                        String senha = sc.nextLine();
+
                         System.out.print("Cidade: ");
-                        usuario.setCidade(scanner.nextLine());
+                        String cidade = sc.nextLine();
+
                         System.out.print("Estado (UF): ");
-                        usuario.setEstado(scanner.nextLine());
+                        String estado = sc.nextLine();
+
                         System.out.print("Pais: ");
-                        usuario.setPais(scanner.nextLine());
+                        String pais = sc.nextLine();
+
+                        usuario.setNome(nome);
+                        usuario.setEmail(email);
+                        usuario.setSenha(senha);
+                        usuario.setCidade(cidade);
+                        usuario.setEstado(estado);
+                        usuario.setPais(pais);
+
                         usuarioService.atualizar(usuario);
                         System.out.println("Usuario atualizado.");
                         break;
                     }
                     case 4: {
                         System.out.print("ID do usuario: ");
-                        usuarioService.remover(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+                        usuarioService.remover(idUsuario);
                         System.out.println("Usuario removido.");
                         break;
                     }
                     case 5: {
-                        ContaEnergia conta = new ContaEnergia();
                         System.out.print("ID do usuario: ");
-                        conta.setIdUsuario(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+
                         System.out.print("Data referencia (AAAA-MM-DD): ");
-                        conta.setDataReferencia(LocalDate.parse(scanner.nextLine()));
+                        String dataTexto = sc.nextLine();
+
                         System.out.print("Numero da leitura: ");
-                        String leitura = scanner.nextLine();
+                        String leitura = sc.nextLine();
+
+                        System.out.print("Consumo kWh: ");
+                        String kwhTexto = sc.nextLine();
+
+                        System.out.print("Valor total da conta: ");
+                        String valorTexto = sc.nextLine();
+
+                        System.out.print("Comprovante: ");
+                        String comprovante = sc.nextLine();
+
+                        System.out.print("Pago? (S/N): ");
+                        String pago = sc.nextLine();
+
+                        ContaEnergia conta = new ContaEnergia();
+                        conta.setIdUsuario(idUsuario);
+                        conta.setDataReferencia(LocalDate.parse(dataTexto));
                         if (!leitura.trim().isEmpty()) {
                             conta.setNumeroLeitura(Integer.parseInt(leitura));
                         }
-                        System.out.print("Consumo kWh: ");
-                        conta.setConsumoKwh(Double.parseDouble(scanner.nextLine().replace(',', '.')));
-                        System.out.print("Valor total da conta: ");
-                        conta.setValorTotal(Double.parseDouble(scanner.nextLine().replace(',', '.')));
-                        System.out.print("Comprovante: ");
-                        conta.setComprovante(scanner.nextLine());
-                        System.out.print("Pago? (S/N): ");
-                        conta.setStatusPagamento(scanner.nextLine().equalsIgnoreCase("S") ? "S" : "N");
+                        conta.setConsumoKwh(Double.parseDouble(kwhTexto.replace(',', '.')));
+                        conta.setValorTotal(Double.parseDouble(valorTexto.replace(',', '.')));
+                        conta.setComprovante(comprovante);
+                        if (pago.equalsIgnoreCase("S")) {
+                            conta.setStatusPagamento("S");
+                        } else {
+                            conta.setStatusPagamento("N");
+                        }
+
                         System.out.println(contaEnergiaService.cadastrar(conta));
                         break;
                     }
@@ -162,47 +214,76 @@ public class EcoVoltApp {
                     }
                     case 7: {
                         System.out.print("ID da conta: ");
-                        ContaEnergia conta = contaEnergiaService.buscarPorId(Integer.parseInt(scanner.nextLine()));
+                        int idConta = Integer.parseInt(sc.nextLine());
+                        ContaEnergia conta = contaEnergiaService.buscarPorId(idConta);
+
                         System.out.print("ID do usuario: ");
-                        conta.setIdUsuario(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+
                         System.out.print("Data referencia (AAAA-MM-DD): ");
-                        conta.setDataReferencia(LocalDate.parse(scanner.nextLine()));
+                        String dataTexto = sc.nextLine();
+
                         System.out.print("Consumo kWh: ");
-                        conta.setConsumoKwh(Double.parseDouble(scanner.nextLine().replace(',', '.')));
+                        String kwhTexto = sc.nextLine();
+
                         System.out.print("Valor total: ");
-                        conta.setValorTotal(Double.parseDouble(scanner.nextLine().replace(',', '.')));
+                        String valorTexto = sc.nextLine();
+
                         System.out.print("Comprovante: ");
-                        conta.setComprovante(scanner.nextLine());
+                        String comprovante = sc.nextLine();
+
                         System.out.print("Pago? (S/N): ");
-                        conta.setStatusPagamento(scanner.nextLine().equalsIgnoreCase("S") ? "S" : "N");
+                        String pago = sc.nextLine();
+
+                        conta.setIdUsuario(idUsuario);
+                        conta.setDataReferencia(LocalDate.parse(dataTexto));
+                        conta.setConsumoKwh(Double.parseDouble(kwhTexto.replace(',', '.')));
+                        conta.setValorTotal(Double.parseDouble(valorTexto.replace(',', '.')));
+                        conta.setComprovante(comprovante);
+                        if (pago.equalsIgnoreCase("S")) {
+                            conta.setStatusPagamento("S");
+                        } else {
+                            conta.setStatusPagamento("N");
+                        }
+
                         contaEnergiaService.atualizar(conta);
                         System.out.println("Conta atualizada.");
                         break;
                     }
                     case 8: {
                         System.out.print("ID da conta: ");
-                        contaEnergiaService.remover(Integer.parseInt(scanner.nextLine()));
+                        int idConta = Integer.parseInt(sc.nextLine());
+                        contaEnergiaService.remover(idConta);
                         System.out.println("Conta removida.");
                         break;
                     }
                     case 9: {
-                        Missao missao = new Missao();
                         System.out.print("Nome da missao: ");
-                        missao.setNome(scanner.nextLine());
+                        String nome = sc.nextLine();
+
                         System.out.print("Descricao: ");
-                        missao.setDescricao(scanner.nextLine());
+                        String descricao = sc.nextLine();
+
                         System.out.print("Pontos premio: ");
-                        missao.setPontosPremio(Integer.parseInt(scanner.nextLine()));
+                        int pontosPremio = Integer.parseInt(sc.nextLine());
+
                         System.out.print("Data inicio (AAAA-MM-DD) ou Enter: ");
-                        String di = scanner.nextLine();
-                        if (!di.trim().isEmpty()) {
-                            missao.setDataInicio(LocalDate.parse(di));
-                        }
+                        String dataInicio = sc.nextLine();
+
                         System.out.print("Data fim (AAAA-MM-DD) ou Enter: ");
-                        String df = scanner.nextLine();
-                        if (!df.trim().isEmpty()) {
-                            missao.setDataFim(LocalDate.parse(df));
+                        String dataFim = sc.nextLine();
+
+                        Missao missao = new Missao();
+                        missao.setNome(nome);
+                        missao.setDescricao(descricao);
+                        missao.setPontosPremio(pontosPremio);
+                        if (!dataInicio.trim().isEmpty()) {
+                            missao.setDataInicio(LocalDate.parse(dataInicio));
                         }
+                        if (!dataFim.trim().isEmpty()) {
+                            missao.setDataFim(LocalDate.parse(dataFim));
+                        }
+
                         System.out.println(missaoService.cadastrar(missao));
                         break;
                     }
@@ -219,18 +300,26 @@ public class EcoVoltApp {
                     }
                     case 11: {
                         System.out.print("ID da missao: ");
-                        missaoService.remover(Integer.parseInt(scanner.nextLine()));
+                        int idMissao = Integer.parseInt(sc.nextLine());
+                        missaoService.remover(idMissao);
                         System.out.println("Missao removida.");
                         break;
                     }
                     case 12: {
-                        Dica dica = new Dica();
                         System.out.print("Nome da dica: ");
-                        dica.setNome(scanner.nextLine());
+                        String nome = sc.nextLine();
+
                         System.out.print("Descricao: ");
-                        dica.setDescricao(scanner.nextLine());
+                        String descricao = sc.nextLine();
+
                         System.out.print("ID do usuario autor: ");
-                        dica.setIdUsuarioAutor(Integer.parseInt(scanner.nextLine()));
+                        int idAutor = Integer.parseInt(sc.nextLine());
+
+                        Dica dica = new Dica();
+                        dica.setNome(nome);
+                        dica.setDescricao(descricao);
+                        dica.setIdUsuarioAutor(idAutor);
+
                         System.out.println(dicaService.cadastrar(dica));
                         break;
                     }
@@ -246,13 +335,20 @@ public class EcoVoltApp {
                         break;
                     }
                     case 14: {
-                        AcaoSustentavel acao = new AcaoSustentavel();
                         System.out.print("Nome da acao: ");
-                        acao.setNome(scanner.nextLine());
+                        String nome = sc.nextLine();
+
                         System.out.print("Descricao: ");
-                        acao.setDescricao(scanner.nextLine());
+                        String descricao = sc.nextLine();
+
                         System.out.print("Pontos base: ");
-                        acao.setPontosBase(Integer.parseInt(scanner.nextLine()));
+                        int pontosBase = Integer.parseInt(sc.nextLine());
+
+                        AcaoSustentavel acao = new AcaoSustentavel();
+                        acao.setNome(nome);
+                        acao.setDescricao(descricao);
+                        acao.setPontosBase(pontosBase);
+
                         System.out.println(acaoSustentavelService.cadastrar(acao));
                         break;
                     }
@@ -269,7 +365,8 @@ public class EcoVoltApp {
                     }
                     case 16: {
                         System.out.print("ID do usuario: ");
-                        int pontos = pontuacaoService.pontuarUsuarioPorEconomia(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+                        int pontos = pontuacaoService.pontuarUsuarioPorEconomia(idUsuario);
                         System.out.println("Pontos gerados: " + pontos);
                         break;
                     }
@@ -287,7 +384,8 @@ public class EcoVoltApp {
                     }
                     case 18: {
                         System.out.print("ID do usuario: ");
-                        Map<String, Double> resumo = contaEnergiaService.gerarResumoConsumoUsuario(Integer.parseInt(scanner.nextLine()));
+                        int idUsuario = Integer.parseInt(sc.nextLine());
+                        Map<String, Double> resumo = contaEnergiaService.gerarResumoConsumoUsuario(idUsuario);
                         System.out.println("Total kWh: " + resumo.get("totalKwh"));
                         System.out.println("Total pago: R$ " + resumo.get("totalConta"));
                         System.out.println("Media kWh: " + resumo.get("mediaKwh"));
@@ -329,6 +427,6 @@ public class EcoVoltApp {
             }
         }
 
-        scanner.close();
+        sc.close();
     }
 }
