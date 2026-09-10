@@ -6,9 +6,15 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-    public static Connection getconnection() throws ClassNotFoundException, SQLException {
-        Class.forName("oracle.jdbc.OracleDriver");
-            Connection conexao = DriverManager.getConnection("dbc:oracle:thin:@oracle.fiap.com.br:1521:orcl", "rm572228", "260497");
-            return conexao;
+    private static final String URL = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl";
+    private static final String USER = "rm572228";
+    private static final String PASSWORD = "260497";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    public static Connection getconnection() throws SQLException {
+        return getConnection();
     }
 }
